@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메뉴 추천기</title>
+  <style>
+    /* CSS 코드를 여기에 붙여넣으세요 */
+    @media only screen and (max-width: 600px) {
+     body {
+       padding: 0; /* 필요에 따라 조정 */
+     }
+   
+     .container {
+       width: 90%; /* 필요에 따라 조정 */
+       padding: 20px; /* 필요에 따라 조정 */
+     }
+   
+     h1 {
+       font-size: 36px; /* 필요에 따라 조정 */
+     }
+   
+     .question, .result {
+       font-size: 18px; /* 필요에 따라 조정 */
+     }
+   
+     #recommended-image {
+      max-width: 80%; /* 이미지의 최대 너비를 조절하여 더 크게 보이도록 설정 */
+      height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지 */
+      margin-top: 20px; /* 이미지와 텍스트 사이에 간격 추가 */
+     }
+   
+     .yes-btn, .no-btn {
+       padding: 8px 16px; /* 필요에 따라 조정 */
+       font-size: 16px; /* 필요에 따라 조정 */
+     }
+   }
+   
+   body {
+     font-family: Arial, sans-serif;
+     background-color: #f4f4f4;
+     margin: 0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+   }
+   
+   .container {
+     text-align: center;
+     background-color: #fff;
+     border-radius: 10px;
+     padding: 30px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   }
+   
+   h1 {
+     font-size: 48px; /* 제목의 글자 크기 조절 */
+   }
+   
+   .question {
+     font-size: 22px;
+     display: none;
+   }
+   
+   .result {
+     display: none;
+     margin-top: 28px;
+     font-size: 22px;
+     text-align: center; /* 이미지를 가운데 정렬하기 위해 추가 */
+   }
+   
+   #recommended-image {
+     max-width: 30%; /* 이미지의 최대 너비를 조절하여 너무 커지는 것을 방지 */
+     height: auto; /* 이미지의 높이를 자동으로 조절하여 비율을 유지 */
+     margin-top: 20px; /* 이미지와 텍스트 사이에 간격 추가 */
+   }
+   
+   #recommended-menu {
+     font-size: 32px;
+     font-weight: bold; /* 텍스트를 굵게 표시 */
+     color: #000000; /* 원하는 색상으로 변경 */
+     display: inline; /* 인라인 요소로 표시되도록 설정 */
+   }
+   
+   .yes-btn, .no-btn {
+     margin: 5px;
+     padding: 10px 20px;
+     font-size: 20px;
+     cursor: pointer;
+   }
+   
+   .yes-btn {
+     background-color: #4caf50;
+     color: #fff;
+     border: none;
+     border-radius: 5px;
+   }
+   
+   .no-btn {
+     background-color: #f44336;
+     color: #fff;
+     border: none;
+     border-radius: 5px;
+   }
+   
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>메뉴 추천기</h1>
+    <div class="question" id="question1">
+      <!-- 첫 번째 질문의 내용을 여기에 추가하세요 -->
+      <p>질문 1: 오늘 날씨가 덥나요?</p>
+      <button class="yes-btn" onclick="nextQuestion('yes')">예</button>
+      <button class="no-btn" onclick="nextQuestion('no')">아니요</button>
+    </div>
+    <div class="question" id="question2" style="display: none;">
+      <!-- 두 번째 질문의 내용을 여기에 추가하세요 -->
+      <p>질문 2: 카페인을 먹고 싶나요?</p>
+      <button class="yes-btn" onclick="nextQuestion('yes')">예</button>
+      <button class="no-btn" onclick="nextQuestion('no')">아니요</button>
+    </div>
+    <div class="question" id="question3" style="display: none;">
+      <!-- 세 번째 질문의 내용을 여기에 추가하세요 -->
+      <p>질문 3: 다이어트를 하고 있나요?</p>
+      <button class="yes-btn" onclick="nextQuestion('yes')">예</button>
+      <button class="no-btn" onclick="nextQuestion('no')">아니요</button>
+    </div>
+    <div class="result" id="result" style="display: none;">
+      <img id="recommended-image" src="" alt="추천 메뉴 이미지">
+      <p>추천 메뉴: <span id="recommended-menu"></span></p>
+    </div>
+  </div>
+  <script>
+    // JavaScript 코드를 여기에 붙여넣으세요
+    let currentQuestion = 1;
+    let userAnswers = [];
+    let selectedMenuArray = null;
+    let selectedMenu = ''; // 선택된 메뉴를 저장할 변수
+
+    const menuArrays = [
+      [ // yes yes no 0
+        '딸기라떼','생 과일 수박주스','오레오딸기베리 밀크티 + 크림폼','1L 보틀 아메리카노','아메리카노','카페라떼','콜드브루','콜드브루 라떼','카푸치노','바닐라 카페라떼','헤이즐넛 카페라떼','대만소금커피','카페모카 라떼','카라멜마끼아또','화이트 돌체라떼(연유)','그린샷 말차라떼', '로얄 얼그레이티','프리미엄 자스민 그린티','철관음 우롱티','딸기베리 얼그레이티','랍상소우총 블랙티','크림폼 얼그레이티','크림폼 랍상소우총 블랙티','크림폼 프리미엄 자스민 그린티','크림폼 철관음 우롱티'
+      ],
+      [ // yes yes yes 1
+        '1L 보틀 아메리카노', '아메리카노', '카페라떼', '콜드브루', '콜드브루 라떼', '카푸치노', '로얄 얼그레이티', '프리미엄 자스민 그린티', '철관음 우롱티', '딸기베리 얼그레이티', '랍상소우총 블랙티'
+      ],
+      [ // yes no no 2
+        '딸기라떼','생 과일 수박주스','오레오딸기베리 밀크티 + 크림폼', '망고요거 밀크티', '딸기베리말차 밀크티','초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '달고나 밀크티', '복숭아 아이스티', '석류 아이스티', '레몬 아이스티', '체리콕', '블루레몬 스파클링(탄산)', '17곡 미숫가루', '패션후르츠 스파클링(탄산)', '청포도 스파클링(탄산)', '레몬 스파클링(탄산)','자몽 스파클링(탄산)', '망고 주스 + 코코넛', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '상큼 딸기베리 요거 스무디', '블루베리 요거 스무디', '복숭아 스무디 + 코코넛', '망고 요거 스무디', '레몬 요거 스무디', '구름 스무디', '플레인 요거트 스무디', '망고 스무디', '청포도 스무디', '제주 청귤 스무디', '초코 자바칩 프라페', '오레오 초코 프라페', '오레오 밀크 프라페', '제주 말차 프라페', '타로 프라페', '타이거밀크 프라페', '밀크쉐이크', '루이보스티', '크림폼 루이보스티', '논알콜 하이볼(탄산)'
+      ],
+      [ // yes no yes 3
+        '생 과일 수박주스', '17곡 미숫가루', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '루이보스티'
+      ],
+      [ // no yes no 4
+        '아메리카노', '카페라떼', '콜드브루', '콜드브루 라떼', '카푸치노', '바닐라 카페라떼', '헤이즐넛 카페라떼', '대만소금커피', '카페모카 라떼', '카라멜마끼아또', '화이트 돌체라떼(연유)', '그린샷 말차라떼', '로얄 블랙 카라멜 밀크티', '타로 밀크티 + 펄', '로얄 블랙 밀크티 + 펄', '로얄얼그레이 밀크티', '로얄 얼그레이티', '철관음 우롱티', '딸기베리 얼그레이티', '랍상소우총 블랙티'
+      ],
+      [ // no yes yes 5
+        '아메리카노', '카페라떼', '콜드브루', '콜드브루 라떼', '카푸치노','그린샷 말차라떼', '로얄 얼그레이티', '철관음 우롱티', '랍상소우총 블랙티'
+      ],
+      [ // no no no 6
+        '초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '달고나 밀크티', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '프리미엄 자스민 그린티', '루이보스티'
+      ],
+      [ // no no yes 7
+        '프리미엄 자스민 그린 밀크티', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '프리미엄 자스민 그린티', '루이보스티'
+      
+      ]
+];
+
+document.addEventListener("DOMContentLoaded", function() {
+  showQuestion(currentQuestion);
+});
+
+function showQuestion(questionNumber) {
+  document.querySelectorAll('.question').forEach(function(question) {
+    question.style.display = 'none';
+  });
+
+  const currentQuestionElement = document.getElementById(`question${questionNumber}`);
+  if (currentQuestionElement) {
+    currentQuestionElement.style.display = 'block';
+  }
+}
+
+function selectMenuArray() {
+  if (userAnswers[0] === 'yes' && userAnswers[1] === 'yes' && userAnswers[2] === 'no') {
+    selectedMenuArray = menuArrays[0];
+  } else if (userAnswers[0] === 'yes' && userAnswers[1] === 'yes' && userAnswers[2] === 'yes') {
+    selectedMenuArray = menuArrays[1];
+  } else if (userAnswers[0] === 'yes' && userAnswers[1] === 'no' && userAnswers[2] === 'no') {
+    selectedMenuArray = menuArrays[2];
+  } else if (userAnswers[0] === 'yes' && userAnswers[1] === 'no' && userAnswers[2] === 'yes') {
+    selectedMenuArray = menuArrays[3];
+  } else if (userAnswers[0] === 'no' && userAnswers[1] === 'yes' && userAnswers[2] === 'no') {
+    selectedMenuArray = menuArrays[4];
+  } else if (userAnswers[0] === 'no' && userAnswers[1] === 'yes' && userAnswers[2] === 'yes') {
+    selectedMenuArray = menuArrays[5];
+  } else if (userAnswers[0] === 'no' && userAnswers[1] === 'no' && userAnswers[2] === 'no') {
+    selectedMenuArray = menuArrays[6];
+  } else if (userAnswers[0] === 'no' && userAnswers[1] === 'no' && userAnswers[2] === 'yes') {
+    selectedMenuArray = menuArrays[7];
+  }
+}
+
+function nextQuestion(answer) {
+  userAnswers.push(answer);
+  currentQuestion++;
+
+  if (currentQuestion <= 3) {
+    showQuestion(currentQuestion);
+  } else {
+    selectMenuArray();
+    showResult();
+  }
+}
+
+function showResult() {
+  document.querySelectorAll('.question').forEach(function(question) {
+    question.style.display = 'none';
+  });
+
+  const resultDiv = document.getElementById('result');
+  const recommendedMenuSpan = document.getElementById('recommended-menu');
+
+  resultDiv.style.display = 'block';
+  
+  const num2 = Math.floor(Math.random() * selectedMenuArray.length);
+  selectedMenu = selectedMenuArray[num2];
+  recommendedMenuSpan.textContent = selectedMenu;
+
+   // 이미지 경로를 매핑한 객체
+   const menuToImageMap = {
+    // ESPRESSO
+    '아메리카노': 'images/americano.jpg',//
+    '1L 보틀 아메리카노': 'images/1L_bottle_americano.jpg',//
+    '카페라떼': 'images/cafe_latte.jpg',//
+    '콜드브루': 'images/cold_brew.jpg',//
+    '콜드브루 라떼': 'images/cold_brew_latte.jpg',//
+    '카푸치노': 'images/cappuccino.jpg',//
+    '바닐라 카페라떼': 'images/vanilla_cafe_latte.jpg',//
+    '헤이즐넛 카페라떼': 'images/hazelnut_cafe_latte.jpg',//
+    '대만소금커피': 'images/taiwan_salt_coffee.jpg',//
+    '카페모카 라떼': 'images/cafe_mocha_latte.jpg',//
+    '카라멜마끼아또': 'images/caramel_macchiato.jpg',//
+    '화이트 돌체라떼(연유)': 'images/White Dolce Latte.jpg',//
+    '그린샷 말차라떼': 'images/Green Shot Matcha Latte.jpg',//
+
+    // MILK TEA
+    '딸기라떼': 'images/Strawberry Latte.jpg',//
+    '타로 밀크티 + 펄': 'images/Taro Milk Tea + Pearl.jpg',//
+    '로얄 블랙 밀크티 + 펄': 'images/Royal Black Milk Tea + Pearl.jpg',//
+    '오레오딸기베리 밀크티 + 크림폼': 'images/Oreo Strawberry Vera Milk Tea + Cream Foam.jpg',//
+    '달고나 밀크티': 'images/Dalgona Milk Tea.jpg',//
+    '로얄얼그레이 밀크티': 'images/Royal Earl Gray Milk Tea.jpg',//
+    '망고요거 밀크티': 'images/Mango Yogurt Milk Tea.jpg',//
+    '초콜릿크림폼 밀크티': 'images/Chocolate Cream Foam Milk Tea.jpg',//
+    '프리미엄 자스민 그린 밀크티': 'images/Premium Jasmine Green Milk Tea.jpg',//
+    '생 과일 수박주스': 'images/Fresh Fruit Watermelon Juice.jpg',//
+    '철관음우롱 밀크티': 'images/Tieguanyin Oolong Milk Tea.jpg',//
+    '로얄 블랙 카라멜 밀크티': 'images/Royal Black Caramel Milk Tea.jpg',//
+    '딸기베리말차 밀크티': 'images/Strawberry Berry Matcha Milk Tea.jpg',//
+
+    // SPARKLING & ADE
+    '복숭아 아이스티': 'images/peach iced tea.jpg',//
+    '석류 아이스티': 'images/Pomegranate Iced Tea.jpg',//
+    '레몬 아이스티': 'images/lemon iced tea.jpg',//
+    '체리콕': 'images/cherry coke.jpg',//
+    '블루레몬 스파클링(탄산)': 'images/Blue Lemon Sparkling (Carbonated).jpg',//
+    '17곡 미숫가루': 'images/17 Grains Rice Flour.jpg',//?
+    '패션후르츠 스파클링(탄산)': 'images/Passion Fruit Sparkling (Carbonated).jpg',//
+    '청포도 스파클링(탄산)': 'images/Green Grape Sparkling (Carbonated).jpg',//
+    '레몬 스파클링(탄산)': 'images/Lemon Sparkling (Carbonated).jpg',//
+    '자몽 스파클링(탄산)': 'images/Grapefruit Sparkling (Carbonated).jpg',//
+    '자몽 청량차': 'images/Grapefruit Refreshing Tea.jpg',//
+    '유자 청량차': 'images/Citron refreshing tea.jpg',//
+    '레몬 청량차': 'images/Lemon refreshing tea.jpg',//
+    '제주 청귤차': 'images/Jeju Green Tangerine Tea.jpg',//
+    '망고 주스 + 코코넛': 'images/Mango Juice + Coconut.jpg',//
+    '히비스커스': 'images/hibiscus.jpg',//
+
+    // SMOOTHIE & FRAPPER
+    '상큼 딸기베리 요거 스무디': 'images/Fresh Strawberry and Berry Yogurt Smoothie.jpg',//
+    '블루베리 요거 스무디': 'images/Blueberry Yogurt Smoothie.jpg',//
+    '복숭아 스무디 + 코코넛': 'images/Peach Smoothie + Coconut.jpg',//
+    '망고 요거 스무디': 'images/Mango Yogurt Smoothie.jpg',//
+    '레몬 요거 스무디': 'images/Lemon Yogurt Smoothie.jpg',//
+    '구름 스무디': 'images/cloud smoothie.jpg',//
+    '플레인 요거트 스무디': 'images/Plain Yogurt Smoothie.jpg',//
+    '망고 스무디': 'images/Mango Smoothie.jpg',//
+    '청포도 스무디': 'images/Green Grape Smoothie.jpg',//
+    '제주 청귤 스무디': 'images/Jeju Green Tangerine Smoothie.jpg',//
+    '초코 자바칩 프라페': 'images/Choco Java Chip Frappe.jpg',//
+    '오레오 초코 프라페': 'images/Oreo Choco Frappe.jpg',//
+    '오레오 밀크 프라페': 'images/Oreo Milk Frappe.jpg',//
+    '제주 말차 프라페': 'images/Jeju Matcha Frappe.jpg',//
+    '타로 프라페': 'images/Taro Frappe.jpg',//
+    '타이거밀크 프라페': 'images/Tiger Milk Frappe.jpg',//
+    '밀크쉐이크': 'images/milkshake.jpg',//
+
+    // BASIC TEA
+    '랍상소우총 블랙티': 'images/Lapsang Souchong Black Tea.jpg',//
+    '로얄 얼그레이티': 'images/royal earl gray tea.jpg',//
+    '프리미엄 자스민 그린티': 'images/Premium Jasmine Green Tea.jpg',//
+    '철관음 우롱티': 'images/Tieguanyin Oolong Tea.jpg',//
+    '루이보스티': 'images/rooiboster.jpg',//
+    '딸기베리 얼그레이티': 'images/Strawberry Berry Earl Gray Tea.jpg',//
+
+    // BASIC TEA WITH CREAM FORM
+    '크림폼 얼그레이티': 'images/Cream Foam Earl Gray Tea.jpg',//
+    '크림폼 랍상소우총 블랙티': 'images/Cream Foam Lapsang Souchong Black Tea.jpg',//
+    '크림폼 프리미엄 자스민 그린티': 'images/Cream Foam Premium Jasmine Green Tea.jpg',//
+    '크림폼 철관음 우롱티': 'images/Creamy Tieguanyin Oolong Tea.jpg',//
+    '크림폼 루이보스티': 'images/Creamy Rooibos Tea.jpg',//
+
+    // BEAVERAGE 6
+    '논알콜 하이볼(탄산)': 'images/Non-Alcoholic Highball (Carbonated).jpg',//
+
+    // 다른 메뉴에 대한 이미지 경로도 추가
+  };
+
+  const recommendedImage = document.getElementById('recommended-image'); // 이미지 엘리먼트 가져오기
+
+  // 선택된 메뉴에 해당하는 이미지를 설정
+  recommendedImage.src = menuToImageMap[selectedMenu];
+  recommendedImage.alt = selectedMenu + ' 이미지';
+}
+  </script>
+</body>
+</html>
