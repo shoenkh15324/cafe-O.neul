@@ -154,11 +154,6 @@
       <p>추천 메뉴: <span id="recommended-menu"></span></p>
     </div>
     </div>
-    <!-- 룰렛 요소 -->
-    <div id="roulette" class="roulette" style="display: none;">
-      <div class="roulette-inner" id="roulette-inner"></div>
-      <button class="spin-btn" onclick="spinRoulette()">Spin</button>
-    </div>
     <button id="refreshButton">새로고침</button>
   </div>
   <script>
@@ -176,7 +171,7 @@
         '1L 보틀 아메리카노', '아메리카노', '콜드브루', '로얄 얼그레이티', '프리미엄 자스민 그린티', '철관음 우롱티', '딸기베리 얼그레이티', '랍상소우총 블랙티'
       ],
       [ // yes yes no yes 2
-        '카페라떼', '콜드브루 라떼', '카푸치노', '바닐라 카페라떼', '헤이즐넛 카페라떼', '카페모카 라떼', '카라멜마끼야또', '화이트 돌체라떼(연유)', '그린샷 말차라떼', '커피쉐이크'
+        '카페라떼', '콜드브루 라떼', '카푸치노', '바닐라 카페라떼', '헤이즐넛 카페라떼', '카페모카 라떼', '카라멜마끼야또', '화이트 돌체라떼(연유)', '그린샷 말차라떼'
       ],
       [ // yes yes no no 3
         '1L 보틀 아메리카노', '아메리카노', '콜드브루', '대만소금커피', '로얄 얼그레이티', '프리미엄 자스민 그린티', '철관음 우롱티', '딸기베리 얼그레이티', '랍상소우총 블랙티', '크림폼 얼그레이티', '크림폼 랍상소우총 블랙티', '크림폼 프리미엄 자스민 그린티', '크림폼 철관음 우롱티'
@@ -188,10 +183,10 @@
         '생 과일 수박주스', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '루이보스티'
       ],
       [ // yes no no yes 6
-        '딸기라떼', '오레오딸기베리 밀크티 + 크림폼', '망고 요거 밀크티', '딸기베리 말차 밀크티', '초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '초당옥수수 밀크티 + 펄', '달고나 밀크티', '1리터 미숫가루', '17곡 미숫가루', '상큼 딸기베리 요거 스무디', '블루베리 요거 스무디', '망고 요거 스무디', '레몬 요거 스무디', '구름 스무디', '플레인 요거트 스무디', '초코 자바칩 프라페', '오레오 초코 프라페', '오레오 밀크 프라페', '제주 말차 프라페', '타로 프라페', '타이거 밀크 프라페', '밀크 쉐이크'
+        '딸기라떼', '오레오딸기베리 밀크티 + 크림폼', '망고 요거 밀크티', '딸기베리 말차 밀크티', '초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '달고나 밀크티', '1리터 미숫가루', '17곡 미숫가루', '상큼 딸기베리 요거 스무디', '블루베리 요거 스무디', '망고 요거 스무디', '레몬 요거 스무디', '구름 스무디', '플레인 요거트 스무디', '초코 자바칩 프라페', '오레오 초코 프라페', '오레오 밀크 프라페', '제주 말차 프라페', '타로 프라페', '타이거밀크 프라페', '밀크쉐이크'
       ],
       [ // yes no no no 7
-        '생 과일 수박주스', '복숭아 아이스티', '석류 아이스티', '레몬 아이스티', '체리콕', '블루레몬 스파클링(탄산)', '패션후르츠 스파클링(탄산)', '청포도 스파클링(탄산)', '자몽 스파클링(탄산)', '망고 주스 + 코코넛', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '복숭아 스무디 + 코코넛', '망고 스무디', '청포도 스무디', '제주 청귤 스무디', '루이보스티', '논알콜 하이볼 (탄산)'
+        '생 과일 수박주스', '복숭아 아이스티', '석류 아이스티', '레몬 아이스티', '체리콕', '블루레몬 스파클링(탄산)', '패션후르츠 스파클링(탄산)', '청포도 스파클링(탄산)', '자몽 스파클링(탄산)', '망고 주스 + 코코넛', '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '복숭아 스무디 + 코코넛', '망고 스무디', '청포도 스무디', '제주 청귤 스무디', '루이보스티', '논알콜 하이볼(탄산)'
       ],
       [ // no yes yes yes 8
         '카페라떼', '콜드브루 라떼', '카푸치노', '그린샷 말차라떼'
@@ -200,7 +195,7 @@
         '아메리카노', '콜드브루', '로얄 얼그레이티', '철관음 우롱티', '랍상소우총 블랙티'
       ],
       [ // no yes no yes 10
-        '카페라떼', '콜드브루 라떼', '카푸치노', '바닐라 카페라떼', '헤이즐넛 카페라떼', '카페모카 라떼', '카라멜마끼야또', '화이트 돌체라떼(연유)', '그린샷 말차라떼', '로얄 블랙 카라멜 밀크티', '타로밀크티 + 펄', '로얄 블랙 밀크티 + 펄', '로얄얼그레이 밀크티'
+        '카페라떼', '콜드브루 라떼', '카푸치노', '바닐라 카페라떼', '헤이즐넛 카페라떼', '카페모카 라떼', '카라멜마끼야또', '화이트 돌체라떼(연유)', '그린샷 말차라떼', '로얄 블랙 카라멜 밀크티', '타로 밀크티 + 펄', '로얄 블랙 밀크티 + 펄', '로얄얼그레이 밀크티'
       ],
       [ // no yes no no 11
         '아메리카노', '콜드브루', '대만소금커피', '로얄 얼그레이티', '철관음 우롱티', '딸기베리 얼그레이티', '랍상소우총 블랙티'
@@ -212,7 +207,7 @@
         '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '프리미엄 자스민 그린티', '루이보스티'
       ],
       [ // no no no yes 14
-        '초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '초당옥수수 밀크티 + 펄', '달고나 밀크티'
+        '초콜릿크림폼 밀크티', '프리미엄 자스민 그린 밀크티', '달고나 밀크티'
       ],
       [ // no no no no 15
         '히비스커스', '자몽 청량차', '레몬 청량차', '제주 청귤차', '프리미엄 자스민 그린티', '루이보스티'
@@ -309,7 +304,7 @@ function showResult() {
     '헤이즐넛 카페라떼': 'images/hazelnut_cafe_latte.jpg',//
     '대만소금커피': 'images/taiwan_salt_coffee.jpg',//
     '카페모카 라떼': 'images/cafe_mocha_latte.jpg',//
-    '카라멜마끼아또': 'images/caramel_macchiato.jpg',//
+    '카라멜마끼야또': 'images/caramel_macchiato.jpg',//
     '화이트 돌체라떼(연유)': 'images/White Dolce Latte.jpg',//
     '그린샷 말차라떼': 'images/Green Shot Matcha Latte.jpg',//
 
@@ -392,59 +387,7 @@ function showResult() {
   // 선택된 메뉴에 해당하는 이미지를 설정
   recommendedImage.src = menuToImageMap[selectedMenu];
   recommendedImage.alt = selectedMenu + ' 이미지';
-
-// 룰렛 돌리기
-function spinRoulette() {
-  const rouletteInner = document.getElementById('roulette-inner');
-  const numOptions = 8; // 룰렛 옵션의 개수
-
-  // 룰렛의 각 옵션에 클래스를 추가하여 스타일링
-  for (let i = 0; i < numOptions; i++) {
-    const option = document.createElement('div');
-    option.classList.add('roulette-option');
-    option.textContent = selectedMenuArray[i % selectedMenuArray.length]; // 배열 순환
-    rouletteInner.appendChild(option);
-  }
-
-  // 룰렛을 돌리는 애니메이션 추가
-  const spinDuration = 5000; // 5초
-  rouletteInner.style.transition = `transform ${spinDuration}ms ease-out`;
-  const rotation = 360 * 10 + Math.floor(Math.random() * 360); // 10바퀴 이상 회전
-  rouletteInner.style.transform = `rotate(${rotation}deg)`;
-
-  // 애니메이션 완료 후 결과 표시
-  setTimeout(showRouletteResult, spinDuration);
 }
-
-// 룰렛 결과 표시
-function showRouletteResult() {
-  const rouletteInner = document.getElementById('roulette-inner');
-  const rotation = getRotationDegrees(rouletteInner.style.transform);
-  const numOptions = 8; // 룰렛 옵션의 개수
-  const degreesPerOption = 360 / numOptions;
-
-  // 룰렛이 회전한 각도를 통해 선택된 메뉴 찾기
-  const selectedOptionIndex = Math.floor(rotation / degreesPerOption);
-  const selectedMenu = selectedMenuArray[selectedOptionIndex % selectedMenuArray.length];
-
-  const recommendedMenuSpan = document.getElementById('recommended-menu');
-  recommendedMenuSpan.textContent = selectedMenu;
-
-  // 이미지 경로를 매핑한 객체 (이전과 동일)
-  const menuToImageMap = { /* ... */ };
-
-  const recommendedImage = document.getElementById('recommended-image');
-  recommendedImage.src = menuToImageMap[selectedMenu];
-  recommendedImage.alt = selectedMenu + ' 이미지';
-
-  // 결과 표시
-  const resultDiv = document.getElementById('result');
-  const rouletteDiv = document.getElementById('roulette');
-  resultDiv.style.display = 'block';
-  rouletteDiv.style.display = 'none';
-  }
-}
-
 
 // 새로고침 버튼 요소를 가져옵니다.
 const refreshButton = document.getElementById('refreshButton');
